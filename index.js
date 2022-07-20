@@ -29,7 +29,17 @@ class Canvas extends Main {
 
 // * wait and load main function
 (() => {
+  document.addEventListener('DOMContentLoaded', event => {
+    const canvasClass = new Canvas();
 
-  document.addEventListener('DOMContentLoaded', event => new Canvas().loop(event));
+    window.addEventListener('keydown', event => canvasClass.input(event), false);
+    window.addEventListener('keyup', event => canvasClass.input(event), false);
+    document.addEventListener('mousemove', event => canvasClass.input(event), false);
+    document.addEventListener('click', event => canvasClass.input(event), false);
+    document.addEventListener('mouseover', event => canvasClass.input(event), false);
+    document.addEventListener('mousedown', event => canvasClass.input(event), false);
+    
+    canvasClass.loop(event)
+  });
   
 })()

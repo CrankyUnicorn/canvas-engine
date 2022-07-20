@@ -4,6 +4,10 @@ export default class Main {
   constructor ({canvasProps = null, cycleProps = null} = {}) {
     this.shapesArray = [];
     
+    this.mousePos = [];
+    this.keysDown = [];
+    this.clickDown = false;
+    
     this.canvas;
     this.canvasContext;
     
@@ -64,10 +68,23 @@ export default class Main {
     }
   }
 
-  #input = () => {
+  input = (event) => {
     // user input
-    // todo
-
+    if (event.type === 'mousemove') {
+      this.mousePos = [
+        event.clientX - this.canvas.offsetLeft,
+        event.clientY - this.canvas.offsetTop,
+      ]
+    } else if (event.type === 'mousedown') {
+      this.clickDown = true
+    } else if (event.type === 'click') {
+      this.clickDown = false
+      this.keysDown.push(event)
+    } else if (event.type === 'keydown') {
+      
+      this.keysDown.push(event)
+    }
+    
   }
   
   #update = () => {
@@ -90,6 +107,11 @@ export default class Main {
     // todo
   }
 
+  #cleanInput = () => {
+    // user input clean
+    this.keysDown = []
+  }
+
   loop = (event) => {
     console.log('DOM fully loaded and parsed');
     
@@ -98,12 +120,12 @@ export default class Main {
 
     // ? draw should be dynamic refresh and update static 
     const mainLoop = setInterval( () => {
-        this.#input();
         this.update();
         this.#update();
         this.#update();
         this.#draw();
         this.#post();
+        this.#cleanInput();
     }, this.canvasCycleWait)
   }
 }
