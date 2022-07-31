@@ -59,7 +59,7 @@ class Shape {
     this.center = center;
     this.centerFunc = () => {};
     this.setCenter(center)
-    
+
     this.calcTrans = [0, 0];
     this.calcRot = 0
 
@@ -100,7 +100,7 @@ class Shape {
       this.centerFunc = () => {};
     }
   }
-  
+
   update() {
     this.x += this.velocityX;
     this.y += this.velocityY;
@@ -112,15 +112,15 @@ class Shape {
 
     this.calcTrans = [this.x + this.width / 2, this.y + this.height / 2];
     this.calcRot = this.angle * this.piRadians
-    
+
     this.canvasContext.translate(this.calcTrans[0], this.calcTrans[1])
     this.canvasContext.rotate(this.calcRot)
   }
-  
+
   postDraw() {
     this.centerFunc();
     this.pivotFunc();
-    
+
     this.canvasContext.rotate(-this.calcRot)
     this.canvasContext.translate(-this.calcTrans[0], -this.calcTrans[1])
   }
@@ -185,7 +185,7 @@ export class Typhography extends Shape {
     this.maxWidth =  this.textContent.toString().length * this.textSize / 2;
     this.height = this.textSize / Math.PI
     this.width = this.maxWidth
-    
+
     this.preDraw()
     this.canvasContext.font = `${this.textSize}px serif`;
     this.canvasContext.fillText(
@@ -198,3 +198,26 @@ export class Typhography extends Shape {
   }
 }
 
+// Line
+export class Line extends Shape {
+  constructor(props) {
+    super(props)
+  }
+
+  draw() {
+    this.preDraw()
+    this.canvasContext.fillStyle = this.style;
+    this.canvasContext.strokeStyle = this.style;
+    this.canvasContext.beginPath();
+    this.canvasContext.moveTo(
+      -this.width * this.scaleX / 2 + this.offsetX * this.scaleX,
+      -this.height * this.scaleY / 2 + this.offsetY * this.scaleY
+    );
+    this.canvasContext.lineTo(
+      -this.width * this.scaleX / 2 + (this.offsetX + this.width) * this.scaleX,
+      -this.height * this.scaleY / 2 + (this.offsetY + this.height) * this.scaleY
+    );
+    this.canvasContext.stroke();
+    this.postDraw()
+  }
+}

@@ -1,18 +1,26 @@
-import { Rectangle, Circle, Typhography} from './libs/Shape.js'
+import loop from './Loop.js'
+import { Rectangle, Circle, Typhography, Line }from './libs/Shape.js'
 
 export default class Main {
+  static loop = loop;
+  static Rectangle = Rectangle;
+  static Circle = Circle;
+  static Typhography = Typhography;
+  static Line = Line;
+
   constructor ({canvasProps = null, cycleProps = null} = {}) {
+    //* array of geometric objects
     this.shapesArray = [];
-    
+
+    // * inputs
     this.mousePos = [];
     this.keysDown = [];
     this.clickDown = false;
-    
+
+    // * js vanilla canvas
     this.canvas;
     this.canvasContext;
-    
-    this.waveMotionX = 0
-    
+
     this.canvasDefinition = canvasProps || {
       canvasWidth: 500,
       canvasHeight: 500,
@@ -23,6 +31,9 @@ export default class Main {
     this.canvasCycleWait = cycleProps || 1000 / 60;
 
     this.update =  () => {}
+
+    // ! remove this
+    this.waveMotionX = 0
   }
 
   // FUNCTIONS 
@@ -81,12 +92,10 @@ export default class Main {
       this.clickDown = false
       this.keysDown.push(event)
     } else if (event.type === 'keydown') {
-      
       this.keysDown.push(event)
     }
-    
   }
-  
+
   #update = () => {
     this.shapesArray.map( shape => shape.update() )
   }
@@ -114,7 +123,7 @@ export default class Main {
 
   loop = (event) => {
     console.log('DOM fully loaded and parsed');
-    
+
     this.#setup(this.canvasDefinition);
     this.start();
 
